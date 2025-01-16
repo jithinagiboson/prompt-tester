@@ -1,4 +1,5 @@
 import { PromptTemplate } from "@langchain/core/prompts";
+import { Ollama } from "@langchain/ollama";
 
 // Define or import the config object
 const config = {
@@ -9,31 +10,16 @@ const config = {
     // other params...
 };
 
-const llm = new Ollama({
-    baseUrl: config.url,
-    model: config.model,
-    temperature: config.temperature,
-    maxRetries: config.maxRetries,
-    // other params...
-});
-
-
-
 const generateModel = (modelConfig) => {
     let llm = new Ollama(modelConfig);
     return llm;
 }
 
 export const callLLM = async (promptTemplate, modelConfig) => {
-    llm = generateModel(modelConfig);
+    console.log(modelConfig);
+    let llm = generateModel(modelConfig);
     let prompt = PromptTemplate.fromTemplate(promptTemplate);
-    return prompt.pipe(llm).invoke();
+    return prompt.pipe(llm).invoke(promptTemplate); // Use the user-defined prompt
 }
 
-// Wrap the invocation in an async function
-const run = async () => {
-    const result = await callLLM("1+2", config);
-    console.log(result);
-};
 
-run();

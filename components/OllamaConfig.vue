@@ -8,14 +8,14 @@
     </div>
     <div class="mb-4">
       <label for="model" class="block text-gray-700 font-bold mb-2">Select Model</label>
-      <select id="model" v-model="selectedModel" class="w-full p-2 border rounded-lg">
+      <select id="model" v-model="config.model" class="w-full p-2 border rounded-lg">
         <option value="">Select Model</option>
         <option v-for="model in models" :key="model" :value="model.model">{{ model.model }}</option>
       </select>
     </div>
     <div class="mb-4">
       <label for="url" class="block text-gray-700 font-bold mb-2">Ollama Server URL</label>
-      <input id="url" v-model="config.url" type="text" class="w-full p-2 border rounded-lg">
+      <input id="url" v-model="config.baseUrl" type="text" class="w-full p-2 border rounded-lg">
       <button @click="testConnection" class="bg-green-600 text-white px-4 py-2 rounded-lg ml-2">Test Connection</button>
       <span v-if="connectionStatus" :class="{'text-green-600': connectionStatus === 'connected', 'text-red-600': connectionStatus === 'disconnected'}">{{ connectionStatus }}</span>
     </div>
@@ -78,9 +78,9 @@ const models = ref([]); // Initialize models array
 
 const fetchModels = async () => {
   if(!config) return 
-  console.log(config.url)
+  console.log(config.baseUrl)
   try {
-    const response = await fetch(`${config.value.url}/api/tags`);
+    const response = await fetch(`${config.value.baseUrl}/api/tags`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }

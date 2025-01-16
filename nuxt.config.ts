@@ -6,14 +6,15 @@ export default defineNuxtConfig({
         {
           src: 'https://cdn.tailwindcss.com',
           defer: true
+        },
+        {
+          src: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js',
+          defer: true
         }
       ]
     }
   },
   css: [
     'assets/tailwind.css', // Corrected path
-  ],
-  plugins: [
-    // '~/plugins/config.js' // Register the global state management plugin
   ]
 })
