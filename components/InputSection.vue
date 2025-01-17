@@ -116,8 +116,8 @@ const submitPrompt = async () => {
   for (const [key, value] of Object.entries(variablesObj)) {
     formattedPrompt = formattedPrompt.replace(new RegExp(`{${key}}`, "g"), value);
   }
-
-  let llmRespsonse = await callLLM(
+  try{
+    let llmRespsonse = await callLLM(
     formattedPrompt,
     modelConfig.value,
     responseFormat.value
@@ -127,6 +127,11 @@ const submitPrompt = async () => {
   } else {
     response.value = llmRespsonse;
   }
+  }catch(error){
+
+    response.value=error
+  }
+ 
 };
 </script>
 <style>
