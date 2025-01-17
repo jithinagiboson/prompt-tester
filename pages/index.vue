@@ -81,7 +81,15 @@ const submitPrompt = async () => {
     formattedPrompt = formattedPrompt.replace(new RegExp(`{${key}}`, 'g'), value);
   }
   
-  response.value = await callLLM(formattedPrompt, modelConfig.value);
+
+  let llmRespsonse = await callLLM(formattedPrompt, modelConfig.value,responseFormat.value);
+    if(responseFormat.value=="json")
+    {
+      response.value=JSON.stringify(llmRespsonse,null,4)
+    }else{
+      response.value=llmRespsonse
+    }
+
 };
 
 const exportResults = () => {

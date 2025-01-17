@@ -6,7 +6,7 @@
 export const useShowPopUp = () => useState("showpopup", () => false);
 export const useModelConfig=()=>useState('modelConfig',()=>ref({
     model: 'phi4:4k',
-    baseUrl: 'https://cm80i43mel2dut-11434.proxy.runpod.net',
+    baseUrl: 'https://2sdy5yq6l56pes-11434.proxy.runpod.net',
     temperature: 0,
     maxRetries: 2,
     seed: 41,
@@ -16,6 +16,8 @@ export const useModelConfig=()=>useState('modelConfig',()=>ref({
     numPredict: 1000,
     verbose: false,
     stopSequences: ''
+    ,stream:false
+    ,format:'json'
   }))
 export const useResponse = () => useState('response', () => 'default');
 export const useResponseFormat = () => useState('responseFormat', () => 'json');

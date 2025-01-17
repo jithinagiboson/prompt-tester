@@ -1,3 +1,4 @@
+import { JsonOutputParser, StringOutputParser } from "@langchain/core/output_parsers";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { Ollama } from "@langchain/ollama";
 
@@ -15,11 +16,19 @@ const generateModel = (modelConfig) => {
     return llm;
 }
 
-export const callLLM = async (promptTemplate, modelConfig) => {
+export const callLLM = async (promptTemplate, modelConfig,responseFormat) => {
     console.log(modelConfig);
-    let llm = generateModel(modelConfig);
+   
+    let llm =generateModel(modelConfig);
     let prompt = PromptTemplate.fromTemplate(promptTemplate);
-    return prompt.pipe(llm).invoke(promptTemplate); // Use the user-defined prompt
+    let parser= new JsonOutputParser()
+    if(responseFormat=='text')
+    {
+        modelConfig.format='json'
+        llm= generateModel(modelConfig);
+        parser=new StringOutputParser()
+    }
+    return prompt.pipe(llm).pipe(parser).invoke(); // Use the user-defined prompt
 }
 
 

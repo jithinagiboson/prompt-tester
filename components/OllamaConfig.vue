@@ -101,6 +101,7 @@ onMounted(() => {
 const testConnection = async () => {
   console.log(config.value.url)
   // Connection testing logic here
+  fetchModels()
 };
 
 const toggleAdvanced = () => {
