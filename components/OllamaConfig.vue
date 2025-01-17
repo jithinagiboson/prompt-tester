@@ -22,8 +22,8 @@
     <div class="mb-4">
       <button @click="toggleAdvanced" class="bg-gray-600 text-white px-4 py-2 rounded-lg">Advanced Options</button>
     </div>
-    <div v-if="showAdvanced">
-      {{modelConfig}}
+      <div class="advancedOption overflow-y-auto" v-if="showAdvanced">
+      <!-- {{modelConfig}} -->
       <div class="mb-4">
         <label for="temperature" class="block text-gray-700 font-bold mb-2">Temperature</label>
         <input id="temperature" v-model="config.temperature" type="range" min="0" max="1" step="0.01" class="w-full">
@@ -110,5 +110,10 @@ const toggleAdvanced = () => {
 </script>
 
 <style scoped>
-/* Add any specific styles for the component here */
+.advancedOption {
+ 
+  max-height: 65%; /* Set a maximum height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  width:300px;
+}
 </style>

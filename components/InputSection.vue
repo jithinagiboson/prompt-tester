@@ -51,7 +51,7 @@
           rows="5"
         ></textarea>
       </div>
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <label for="history" class="block text-gray-700 font-bold mb-2"
           >Select Previous Prompt</label
         >
@@ -64,7 +64,7 @@
             {{ item }}
           </option>
         </select>
-      </div>
+      </div> -->
       <div class="mb-4">
         <button
           @click="submitPrompt"
