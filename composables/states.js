@@ -1,9 +1,10 @@
-// export const useShowPopUp= useState("showpopup",()=>false)
-
-
-// import { useState } from 'nuxt/app';
-
 export const useShowPopUp = () => useState("showpopup", () => false);
+export const useLoadingState = () => useState("isLoading", () => false);
+
+
+
+
+
 export const useModelConfig=()=>useState('modelConfig',()=>ref({
     model: 'phi4:4k',
     baseUrl: 'https://2sdy5yq6l56pes-11434.proxy.runpod.net',

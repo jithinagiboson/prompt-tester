@@ -1,7 +1,10 @@
 <template>
-<section :class="viewOption === 'input' ? 'relative inset-0 bg-white p-6' : 'bg-white p-6 rounded-lg shadow-md'">
-    <h2 class="text-2xl font-bold mb-4">Input Section</h2>
-    <div class="mb-4">
+  <section :class="viewOption === 'input' ? 'relative inset-0 bg-white p-6' : 'bg-white p-6 rounded-lg shadow-md'">
+      <h2 class="text-2xl font-bold mb-4">Input Section</h2>
+      
+      <div v-if="isLoading" ><div class="spinner "></div></div> <!-- Spinner element -->
+      <div >
+        <div class="mb-4">
       <label class="block text-gray-700 font-bold mb-2">Define Variables</label>
       <div v-for="(variable, index) in variables" :key="index" class="flex items-center mb-2">
         <input v-model="variable.name" type="text" class="flex-1 p-2 border rounded-lg" placeholder="Variable name">
@@ -23,8 +26,11 @@
     <div class="mb-4">
       <button @click="submitPrompt" class="bg-green-600 text-white px-4 py-2 rounded-lg">Submit Prompt</button>
     </div>
+      </div>
   </section>
 </template>
+
+
 
 <script setup>
 import { ref } from 'vue';
@@ -33,6 +39,7 @@ const modelConfig = useModelConfig();
 const response = useResponse();
 const responseFormat = useResponseFormat();
 const responseTime = useResponseTime();
+const isLoading = useLoadingState(); // Get loading state
 
 const prompt = ref('');
 const selectedHistory = ref('');
@@ -78,7 +85,19 @@ const submitPrompt = async () => {
 };
 
 </script>
+<style>
+.spinner {
+  /* Add your spinner styles here */
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
 
-<style scoped>
-/* Add any specific styles for the InputSection component here */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 </style>
