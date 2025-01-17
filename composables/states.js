@@ -24,4 +24,6 @@ export const useResponse = () => useState('response', () => 'default');
 export const useResponseFormat = () => useState('responseFormat', () => 'json');
 export const useResponseTime = () => useState('responseTime', () => '');
 export const useViewOption = () => useState('viewOption', () => 'both');
+export const usePrompt = () => useState('prompt', () => ref(''));
+
 

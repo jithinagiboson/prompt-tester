@@ -88,7 +88,7 @@ const responseTime = useResponseTime();
 const isLoading = useLoadingState(); // Get loading state
 
 const viewOption = useViewOption() // Add viewOption property
-const prompt = ref("");
+const prompt = usePrompt()
 const selectedHistory = ref("");
 const promptHistory = ref(["Prompt 1", "Prompt 2", "Prompt 3"]);
 const variables = ref([]);
