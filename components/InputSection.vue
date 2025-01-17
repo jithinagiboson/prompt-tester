@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-white p-6 rounded-lg shadow-md">
+<section :class="viewOption === 'input' ? 'relative inset-0 bg-white p-6' : 'bg-white p-6 rounded-lg shadow-md'">
     <h2 class="text-2xl font-bold mb-4">Input Section</h2>
     <div class="mb-4">
       <label class="block text-gray-700 font-bold mb-2">Define Variables</label>

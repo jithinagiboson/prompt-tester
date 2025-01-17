@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="bg-gray-100">
-    <header class="fixed top-0 left-0 w-full bg-blue-600 text-white p-4 shadow-md z-10">
+    <header class="relative top-0 left-0 w-full bg-blue-600 text-white p-4 shadow-md z-10">
       <div class="container mx-auto flex justify-between items-center">
         <h1 class="text-xl font-bold">Prompt Testing GUI</h1>
         <div>
@@ -13,9 +13,11 @@
         </button>
       </div>
     </header>
-    <main class="pt-20 container mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-      <InputSection v-if="viewOption === 'input' || viewOption === 'both'" />
-      <OutputSection v-if="viewOption === 'output' || viewOption === 'both'" :response="response" :responseFormat="responseFormat" :responseTime="responseTime" />
+<main :class="viewOption === 'input' || viewOption === 'output' ? 'relative inset-0 z-0' : 'pt-20 container mx-auto grid grid-cols-1 md:grid-cols-2 gap-4'">
+      <InputSection v-if="viewOption === 'input'" />
+      <OutputSection v-if="viewOption === 'output'" :response="response" :responseFormat="responseFormat" :responseTime="responseTime" />
+      <InputSection v-if="viewOption === 'both'" />
+      <OutputSection v-if="viewOption === 'both'" :response="response" :responseFormat="responseFormat" :responseTime="responseTime" />
     </main>
 
     <OllamaConfig v-if="showPopup" @closeConfig="toggleConfig" />
