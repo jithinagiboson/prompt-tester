@@ -17,7 +17,7 @@ export const useModelConfig=()=>useState('modelConfig',()=>ref({
     verbose: false,
     stopSequences: ''
     ,stream:false
-    ,format:'json'
+
   }))
 export const useResponse = () => useState('response', () => 'default');
 export const useResponseFormat = () => useState('responseFormat', () => 'json');

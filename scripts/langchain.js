@@ -21,12 +21,13 @@ export const callLLM = async (promptTemplate, modelConfig,responseFormat) => {
    
     let llm =generateModel(modelConfig);
     let prompt = PromptTemplate.fromTemplate(promptTemplate);
-    let parser= new JsonOutputParser()
-    if(responseFormat=='text')
+    let parser= new StringOutputParser()
+    if(responseFormat=='json')
     {
-        modelConfig.format='json'
-        llm= generateModel(modelConfig);
-        parser=new StringOutputParser()
+        // modelConfig.format='text'
+        // console.log("modelConfig",modelConfig)
+        llm= generateModel({...modelConfig,format:'json'});
+        parser=new JsonOutputParser()
     }
     return prompt.pipe(llm).pipe(parser).invoke(); // Use the user-defined prompt
 }
