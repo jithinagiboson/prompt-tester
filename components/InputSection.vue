@@ -1,6 +1,5 @@
 <template>
   <section
-  
     :class="
       viewOption === 'input'
         ? 'relative inset-0 bg-white p-6'
@@ -79,7 +78,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { callLLM } from "~/scripts/langchain";
 const modelConfig = useModelConfig();
 const response = useResponse();
@@ -116,23 +115,33 @@ const submitPrompt = async () => {
   for (const [key, value] of Object.entries(variablesObj)) {
     formattedPrompt = formattedPrompt.replace(new RegExp(`{${key}}`, "g"), value);
   }
-  try{
-    let llmRespsonse = await callLLM(
-    formattedPrompt,
-    modelConfig.value,
-    responseFormat.value
-  );
-  if (responseFormat.value == "json") {
-    response.value = JSON.stringify(llmRespsonse, null, 4);
-  } else {
-    response.value = llmRespsonse;
+  try {
+    let llmResponse = await callLLM(
+      formattedPrompt,
+      modelConfig.value,
+      responseFormat.value
+    );
+    if (responseFormat.value == "json") {
+      response.value = JSON.stringify(llmResponse, null, 4);
+    } else {
+      response.value = llmResponse;
+    }
+  } catch (error) {
+    response.value = error;
   }
-  }catch(error){
-
-    response.value=error
-  }
- 
 };
+
+// Add keydown event listener for Ctrl + Enter
+const handleKeydown = (event) => {
+  if (event.ctrlKey && event.key === 'Enter') {
+    submitPrompt();
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown);
+});
+
 </script>
 <style>
 .spinner {
