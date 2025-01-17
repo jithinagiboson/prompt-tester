@@ -28,6 +28,7 @@ import { ref } from 'vue';
 // const response = ref('');
 // const responseFormat = ref('json');
 // const responseTime = ref('');
+const viewOption = useViewOption() // Add viewOption property
 
 const response=useResponse() 
 const responseFormat=useResponseFormat() 

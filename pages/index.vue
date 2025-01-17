@@ -35,7 +35,7 @@ const modelConfig = useModelConfig();
 const response = useResponse();
 const responseFormat = useResponseFormat();
 const responseTime = useResponseTime();
-const viewOption = ref('both'); // Default to show both sections
+const viewOption = useViewOption() // Default to show both sections
 </script>
 
 <style>
