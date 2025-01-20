@@ -127,12 +127,20 @@ const submitPrompt = async () => {
   for (const [key, value] of Object.entries(variablesObj)) {
     formattedPrompt = formattedPrompt.replace(new RegExp(`{${key}}`, "g"), value);
   }
+
   try {
+    // Start measuring time
+const startTime = performance.now();
     let llmResponse = await callLLM(
       formattedPrompt,
       modelConfig.value,
       responseFormat.value
     );
+    // End measuring time
+const endTime = performance.now();
+
+// Calculate the response time
+    responseTime.value = ((endTime - startTime)/1000).toFixed(3)+'s';
     if (responseFormat.value == "json") {
       response.value = JSON.stringify(llmResponse, null, 4);
     } else {
