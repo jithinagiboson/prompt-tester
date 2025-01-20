@@ -103,14 +103,22 @@ const addVariable = () => {
 const removeVariable = (index) => {
   variables.value.splice(index, 1);
 };
-
+const convertToDoubleBraces=(input)=> {
+    // Convert the input object to a JSON string
+    let jsonString = JSON.stringify(input, null, 4);
+    
+    // Replace the single braces with double braces
+    jsonString = jsonString.replace(/{/g, '{{').replace(/}/g, '}}');
+    
+    return jsonString;
+}
 const submitPrompt = async () => {
   // Parse variables into an object
   const variablesObj = {};
   variables.value.forEach((variable) => {
     const trimmedName = variable.name.trim(); // Trim whitespace from variable name
     if (trimmedName && variable.value) {
-      variablesObj[trimmedName] = variable.value;
+      variablesObj[trimmedName] = convertToDoubleBraces(variable.value);
     }
   });
 
