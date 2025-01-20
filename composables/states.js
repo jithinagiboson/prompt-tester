@@ -7,7 +7,7 @@ export const useLoadingState = () => useState("isLoading", () => false);
 
 export const useModelConfig=()=>useState('modelConfig',()=>ref({
     model: 'phi4:4k',
-    baseUrl: 'https://2sdy5yq6l56pes-11434.proxy.runpod.net',
+    baseUrl: 'https://ie3ukzqc9wrws5-11434.proxy.runpod.net',
     temperature: 0,
     maxRetries: 2,
     seed: 41,
@@ -20,6 +20,7 @@ export const useModelConfig=()=>useState('modelConfig',()=>ref({
     ,stream:false
 
   }))
+export const useVariables = () => useState('variables', () => ref([]));  
 export const useResponse = () => useState('response', () => 'default');
 export const useResponseFormat = () => useState('responseFormat', () => 'json');
 export const useResponseTime = () => useState('responseTime', () => '');

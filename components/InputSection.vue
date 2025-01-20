@@ -90,7 +90,11 @@ const viewOption = useViewOption() // Add viewOption property
 const prompt = usePrompt()
 const selectedHistory = ref("");
 const promptHistory = ref(["Prompt 1", "Prompt 2", "Prompt 3"]);
-const variables = ref([]);
+// const variables = ref([]);
+
+import { useVariables } from "~/composables/states"; // Import useVariables
+
+const  variables  = useVariables(); // Get the reactive variablesObj
 
 const addVariable = () => {
   variables.value.push({ name: "", value: "" });
