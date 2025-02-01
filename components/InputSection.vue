@@ -7,14 +7,12 @@
     "
   >
     <h2 class="text-2xl font-bold mb-4">Input Section</h2>
-
-    <div v-if="isLoading"><div class="spinner"></div></div>
-    <!-- Spinner element -->
+    <div v-if="currentTab.isLoading"><div class="spinner"></div></div>
     <div>
       <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2">Define Variables</label>
         <div
-          v-for="(variable, index) in variables"
+          v-for="(variable, index) in currentTab.variables"
           :key="index"
           class="flex items-center mb-2"
         >
@@ -41,30 +39,14 @@
         </button>
       </div>
       <div class="mb-4">
-        <label for="prompt" class="block text-gray-700 font-bold mb-2"
-          >Enter Your Prompt</label
-        >
+        <label for="prompt" class="block text-gray-700 font-bold mb-2">Enter Your Prompt</label>
         <textarea
           id="prompt"
-          v-model="prompt"
+          v-model="currentTab.prompt"
           class="w-full p-2 border rounded-lg"
           rows="5"
         ></textarea>
       </div>
-      <!-- <div class="mb-4">
-        <label for="history" class="block text-gray-700 font-bold mb-2"
-          >Select Previous Prompt</label
-        >
-        <select
-          id="history"
-          v-model="selectedHistory"
-          class="w-full p-2 border rounded-lg"
-        >
-          <option v-for="item in promptHistory" :key="item" :value="item">
-            {{ item }}
-          </option>
-        </select>
-      </div> -->
       <div class="mb-4">
         <button
           @click="submitPrompt"
@@ -73,81 +55,68 @@
           Submit Prompt
         </button>
       </div>
+      <div class="mb-4">
+        <h3 class="text-xl font-bold mb-2">Current Variables</h3>
+        <table class="min-w-full border-collapse border border-gray-300">
+          <thead>
+            <tr>
+              <th class="border border-gray-300 p-2">Variable Name</th>
+              <th class="border border-gray-300 p-2">Variable Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(variable, index) in currentTab.variables" :key="index">
+              <td class="border border-gray-300 p-2">{{ variable.name }}</td>
+              <td class="border border-gray-300 p-2">{{ variable.value }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { callLLM } from "~/scripts/langchain";
 const modelConfig = useModelConfig();
-const response = useResponse();
-const responseFormat = useResponseFormat();
-const responseTime = useResponseTime();
-const isLoading = useLoadingState(); // Get loading state
+const appState = useAppState(); // Access global app state
+const selectedTabIndex = useSelectedTabIndex(); // Track the selected tab index
 
-const viewOption = useViewOption() // Add viewOption property
-const prompt = usePrompt()
-const selectedHistory = ref("");
-const promptHistory = ref(["Prompt 1", "Prompt 2", "Prompt 3"]);
-// const variables = ref([]);
-
-import { useVariables } from "~/composables/states"; // Import useVariables
-
-const  variables  = useVariables(); // Get the reactive variablesObj
+const currentTab = computed(() => appState.value[selectedTabIndex.value]); // Reactive computed property for current tab
 
 const addVariable = () => {
-  variables.value.push({ name: "", value: "" });
+  currentTab.value.variables.push({ name: "", value: "" }); // Use current tab for variables
 };
 
 const removeVariable = (index) => {
-  variables.value.splice(index, 1);
+  currentTab.value.variables.splice(index, 1);
 };
-const convertToDoubleBraces=(input)=> {
-    // Convert the input object to a JSON string
-    let jsonString = JSON.stringify(input, null, 4);
-    
-    // Replace the single braces with double braces
-    jsonString = jsonString.replace(/{/g, '{{').replace(/}/g, '}}');
-    
-    return jsonString;
-}
-const submitPrompt = async () => {
-  // Parse variables into an object
-  const variablesObj = {};
-  variables.value.forEach((variable) => {
-    const trimmedName = variable.name.trim(); // Trim whitespace from variable name
-    if (trimmedName && variable.value) {
-      variablesObj[trimmedName] = convertToDoubleBraces(variable.value);
-    }
-  });
 
-  // Replace variables in the prompt
-  let formattedPrompt = prompt.value;
-  for (const [key, value] of Object.entries(variablesObj)) {
-    formattedPrompt = formattedPrompt.replace(new RegExp(`{${key}}`, "g"), value);
-  }
+const addTab = () => {
+  appState.value.push({ name: "New Tab", variables: [], prompt: '' }); // Add new tab with default values
+};
+
+const removeTab = (index) => {
+  appState.value.splice(index, 1); // Remove tab
+};
+
+const submitPrompt = async () => {
+  const formattedPrompt = currentTab.value.prompt; // Get prompt from current tab
 
   try {
-    // Start measuring time
-const startTime = performance.now();
+    const startTime = performance.now();
     let llmResponse = await callLLM(
       formattedPrompt,
       modelConfig.value,
-      responseFormat.value
+      currentTab.value.responseFormat, // Use currentTab's response format
+      currentTab.value // Pass currentTab to manage loading state
     );
-    // End measuring time
-const endTime = performance.now();
-
-// Calculate the response time
-    responseTime.value = ((endTime - startTime)/1000).toFixed(3)+'s';
-    if (responseFormat.value == "json") {
-      response.value = JSON.stringify(llmResponse, null, 4);
-    } else {
-      response.value = llmResponse;
-    }
+    const endTime = performance.now();
+    currentTab.value.responseTime = ((endTime - startTime) / 1000).toFixed(3) + 's'; // Store response time in currentTab
+    currentTab.value.response = currentTab.value.responseFormat == "json" ? JSON.stringify(llmResponse, null, 4) : llmResponse; // Store response in currentTab
   } catch (error) {
-    response.value = error;
+    currentTab.value.response = error; // Store error in currentTab
   }
 };
 
@@ -161,11 +130,10 @@ const handleKeydown = (event) => {
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown);
 });
-
 </script>
+
 <style>
 .spinner {
-  /* Add your spinner styles here */
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   border-top: 4px solid #3498db;

@@ -22,8 +22,7 @@
     <div class="mb-4">
       <button @click="toggleAdvanced" class="bg-gray-600 text-white px-4 py-2 rounded-lg">Advanced Options</button>
     </div>
-      <div class="advancedOption overflow-y-auto" v-if="showAdvanced">
-      <!-- {{modelConfig}} -->
+    <div class="advancedOption overflow-y-auto" v-if="showAdvanced">
       <div class="mb-4">
         <label for="temperature" class="block text-gray-700 font-bold mb-2">Temperature</label>
         <input id="temperature" v-model="config.temperature" type="range" min="0" max="1" step="0.01" class="w-full">
@@ -67,41 +66,33 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-const modelConfig = useModelConfig();
-const showPopup = useShowPopUp();
-const selectedModel = ref('');
-const config = modelConfig;
+const props = defineProps(['config']); // Accept props for configuration settings
+const showPopup = ref(false);
 const connectionStatus = ref('');
 const showAdvanced = ref(false);
 const models = ref([]); // Initialize models array
 
-
 const fetchModels = async () => {
-  if(!config) return 
-  console.log(config.baseUrl)
+  if (!props.config) return;
   try {
-    const response = await fetch(`${config.value.baseUrl}/api/tags`);
+    const response = await fetch(`${props.config.baseUrl}/api/tags`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
     const data = await response.json();
     models.value = data.models; // Populate models array with fetched data
-    console.log(models)
   } catch (error) {
     console.error('Error fetching models:', error);
   }
 };
 
-
 onMounted(() => {
-  // config.value=
   fetchModels(); // Call fetchModels when the component is mounted
 });
 
 const testConnection = async () => {
-  console.log(config.value.url)
   // Connection testing logic here
-  fetchModels()
+  fetchModels();
 };
 
 const toggleAdvanced = () => {
@@ -111,9 +102,8 @@ const toggleAdvanced = () => {
 
 <style scoped>
 .advancedOption {
- 
   max-height: 65%; /* Set a maximum height */
   overflow-y: auto; /* Enable vertical scrolling */
-  width:300px;
+  width: 300px;
 }
 </style>

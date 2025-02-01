@@ -1,7 +1,6 @@
 import { JsonOutputParser, StringOutputParser } from "@langchain/core/output_parsers";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { Ollama } from "@langchain/ollama";
-import { useLoadingState } from '../composables/states'; // Import loading state
 
 // Define or import the config object
 const config = {
@@ -17,9 +16,8 @@ const generateModel = (modelConfig) => {
     return llm;
 }
 
-export const callLLM = async (promptTemplate, modelConfig, responseFormat) => {
-    const isLoading = useLoadingState(); // Get loading state
-    isLoading.value = true; // Set loading state to true
+export const callLLM = async (promptTemplate, modelConfig, responseFormat, currentTab) => {
+    currentTab.isLoading = true; // Set loading state to true
 
     try {
         console.log(modelConfig);
@@ -34,6 +32,6 @@ export const callLLM = async (promptTemplate, modelConfig, responseFormat) => {
         
         return await prompt.pipe(llm).pipe(parser).invoke(); // Use the user-defined prompt
     } finally {
-        isLoading.value = false; // Reset loading state
+        currentTab.isLoading = false; // Reset loading state
     }
 }

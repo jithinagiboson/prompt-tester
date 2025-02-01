@@ -1,11 +1,7 @@
 export const useShowPopUp = () => useState("showpopup", () => false);
 export const useLoadingState = () => useState("isLoading", () => false);
 
-
-
-
-
-export const useModelConfig=()=>useState('modelConfig',()=>ref({
+export const useModelConfig = () => useState('modelConfig', () => ref({
     model: 'phi4:4k',
     baseUrl: 'https://ie3ukzqc9wrws5-11434.proxy.runpod.net',
     temperature: 0,
@@ -16,15 +12,28 @@ export const useModelConfig=()=>useState('modelConfig',()=>ref({
     topK: 100,
     numPredict: 1000,
     verbose: false,
-    stopSequences: ''
-    ,stream:false
+    stopSequences: '',
+    stream: false
+}));
 
-  }))
+const defaultAppstateValue = {
+    tabName: 'Tab 1',
+    variables: [],
+    prompt: '',
+    response: '',
+    responseFormat: 'json',
+    responseTime: '',
+    isLoading: false
+};
+
+export const defaultAppstate = defaultAppstateValue;
+export const useAppState = () => useState('appState', () => ref([defaultAppstateValue])); // Initialize with one default tab
+
+export const useSelectedTabIndex = () => useState('selectedTabIndex', () => ref(0)); // Track the selected tab index
+
 export const useVariables = () => useState('variables', () => ref([]));  
 export const useResponse = () => useState('response', () => 'default');
 export const useResponseFormat = () => useState('responseFormat', () => 'json');
 export const useResponseTime = () => useState('responseTime', () => '');
 export const useViewOption = () => useState('viewOption', () => 'both');
 export const usePrompt = () => useState('prompt', () => ref(''));
-
-
