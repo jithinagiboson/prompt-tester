@@ -2,7 +2,7 @@
   <div class="fixed top-0 right-0 h-full bg-white shadow-lg z-20 w-80 p-6">
     <div class="flex justify-between items-center mb-4">
       <h3 class="text-xl font-bold">Ollama Configuration</h3>
-      <button @click="showPopup = false" class="text-gray-700">Close
+      <button @click="showPopup=false" class="text-gray-700">Close
         <i class="fas fa-times"></i>
       </button>
     </div>
@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useModelConfig } from '../composables/states'; // Import global state management
 
 const modelConfig = useModelConfig(); // Use global model configuration
@@ -88,7 +88,33 @@ const fetchModels = async () => {
 };
 
 onMounted(() => {
-  fetchModels(); // Call fetchModels when the component is mounted
+  // fetchModels(); // Call fetchModels when the component is mounted
+
+  // Initialize model and baseUrl from URL if available
+  const urlParams = new URLSearchParams(window.location.search);
+  const modelFromUrl = urlParams.get('model');
+  const baseUrlFromUrl = urlParams.get('baseUrl');
+
+  console.log("modelConfig",modelConfig)
+  if (modelFromUrl) {
+    modelConfig.value.model = modelFromUrl;
+  }
+  if (baseUrlFromUrl) {
+    modelConfig.value.baseUrl = baseUrlFromUrl;
+  }
+});
+
+// Watch for changes to model and baseUrl to update the URL
+watch(() => modelConfig.value.model, (newModel) => {
+  const url = new URL(window.location);
+  url.searchParams.set('model', newModel);
+  window.history.pushState({}, '', url);
+});
+
+watch(() => modelConfig.value.baseUrl, (newBaseUrl) => {
+  const url = new URL(window.location);
+  url.searchParams.set('baseUrl', newBaseUrl);
+  window.history.pushState({}, '', url);
 });
 
 const testConnection = async () => {

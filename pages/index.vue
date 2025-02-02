@@ -61,7 +61,8 @@ import OutputSection from '../components/OutputSection.vue';
 const showPopup = useShowPopUp(); // Use global popup state
 const appState = useAppState();
 const selectedTabIndex = useSelectedTabIndex(); // Track the selected tab index
-const viewOption = ref('both'); // Default to showing both sections
+
+const viewOption = useViewOption(); // Default to showing both sections
 
 const addTab = () => {
   let defaultValue = JSON.parse(JSON.stringify(defaultAppstate));

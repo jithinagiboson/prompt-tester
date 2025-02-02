@@ -1,5 +1,5 @@
 <template>
-  <section :class="currentTab.viewOption === 'output' ? 'relative inset-0 bg-white p-6' : 'bg-white p-6 rounded-lg shadow-md'">
+  <section :class="viewOption === 'output' ? 'relative inset-0 bg-white p-6' : 'bg-white p-6 rounded-lg shadow-md'">
     <h2 class="text-2xl font-bold mb-4">Output Section</h2>
     <div class="mb-4">
       <label for="response" class="block text-gray-700 font-bold mb-2">AI Response</label>
@@ -26,6 +26,7 @@
 import { useAppState } from '../composables/states'; // Import global state
 const appState = useAppState();
 const selectedTabIndex=useSelectedTabIndex()
+const viewOption = useViewOption(); // Default to showing both sections
 
 const currentTab = computed(() => appState.value[selectedTabIndex.value]); // Reactive computed property for current tab
 

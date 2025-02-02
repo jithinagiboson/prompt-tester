@@ -1,5 +1,5 @@
 <template>
-  <section
+  <section 
     :class="
       viewOption === 'input'
         ? 'relative inset-0 bg-white p-6'
@@ -66,6 +66,7 @@ import { callLLM } from "~/scripts/langchain";
 const modelConfig = useModelConfig();
 const appState = useAppState(); // Access global app state
 const selectedTabIndex = useSelectedTabIndex(); // Track the selected tab index
+const viewOption = useViewOption(); // Default to showing both sections
 
 const currentTab = computed(() => appState.value[selectedTabIndex.value]); // Reactive computed property for current tab
 
