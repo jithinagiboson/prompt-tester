@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="bg-gray-100">
     <header class="relative top-0 left-0 w-full bg-blue-600 text-white p-4 shadow-md z-10">
-      <div class="container mx-auto flex justify-between items-center">
+      <div class=" mx-auto flex justify-between items-center">
         <h1 class="text-xl font-bold">Prompt Testing GUI</h1>
         <div>
           <button @click="viewOption = 'input'" class="bg-blue-700 text-white px-4 py-2 rounded-lg">Input Section Only</button>
@@ -16,7 +16,7 @@
         </button>
       </div>
     </header>
-    <main class="pt-5 container mx-auto">
+    <main class="pt-5  mx-auto">
       <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2">Select Tab</label>
         <div class="flex mb-2 overflow-x-auto">
