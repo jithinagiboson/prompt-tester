@@ -88,7 +88,7 @@ const fetchModels = async () => {
 };
 
 onMounted(() => {
-  // fetchModels(); // Call fetchModels when the component is mounted
+  fetchModels(); // Call fetchModels when the component is mounted
 
   // Initialize model and baseUrl from URL if available
   const urlParams = new URLSearchParams(window.location.search);
