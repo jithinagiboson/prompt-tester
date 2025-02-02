@@ -86,12 +86,63 @@ const removeTab = (index) => {
   appState.value.splice(index, 1); // Remove tab
 };
 
+
+const convertToDoubleBraces=(input)=> {
+    // Convert the input object to a JSON string
+    let jsonString = JSON.stringify(input, null, 4);
+    
+    // Replace the single braces with double braces
+    jsonString = jsonString.replace(/{/g, '{{').replace(/}/g, '}}');
+    
+    return jsonString;
+}
+// const submitPrompt = async () => {
+//   // Parse variables into an object
+//   const variablesObj = {};
+//   variables.value.forEach((variable) => {
+//     const trimmedName = variable.name.trim(); // Trim whitespace from variable name
+//     if (trimmedName && variable.value) {
+//       variablesObj[trimmedName] = convertToDoubleBraces(variable.value);
+//     }
+//   });
+
+//   // Replace variables in the prompt
+//   let formattedPrompt = prompt.value;
+//   for (const [key, value] of Object.entries(variablesObj)) {
+//     formattedPrompt = formattedPrompt.replace(new RegExp(`{${key}}`, "g"), value);
+//   }
+
+
+
+
+
+
+
 const submitPrompt = async () => {
+  
   let saveIndex=selectedTabIndex.value
  
   let memorisedSelectedTab= appState.value[saveIndex]
+ // Parse variables into an object
+ const variablesObj = {};
+ let variables=currentTab.value.variables
+  variables.forEach((variable) => {
+    const trimmedName = variable.name.trim(); // Trim whitespace from variable name
+    if (trimmedName && variable.value) {
+      variablesObj[trimmedName] = convertToDoubleBraces(variable.value);
+    }
+  });
+
+  // Replace variables in the prompt
+  let formattedPrompt = memorisedSelectedTab.prompt;
+  for (const [key, value] of Object.entries(variablesObj)) {
+    formattedPrompt = formattedPrompt.replace(new RegExp(`{${key}}`, "g"), value);
+  }
+  
+
+
   console.log(memorisedSelectedTab)
-  const formattedPrompt = memorisedSelectedTab.prompt; // Get prompt from current tab
+  // const formattedPrompt = memorisedSelectedTab.prompt; // Get prompt from current tab
   const responseFormat = memorisedSelectedTab.responseFormat; // Get response format from current tab
  
   try {
