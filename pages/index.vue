@@ -17,26 +17,21 @@
       </div>
     </header>
     <main class="pt-5 container mx-auto">
-  
       <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2">Select Tab</label>
-<div class="flex mb-2 overflow-x-auto">
+        <div class="flex mb-2 overflow-x-auto">
           <div v-for="(tab, index) in appState" :key="index" class="relative flex items-center mb-2">
-<div :class="['flex items-center rounded-lg px-3 py-1 mr-2 border', selectedTabIndex === index ? 'bg-blue-200 border-blue-400' : 'bg-green-200 border-green-400']">
-  <div v-if="tab?.isLoading">
-    <div class="spinner h-4 w-4 md:h-6 md:w-6 animate-spin border-2 border-t-transparent border-gray-300 rounded-full"></div>
-  </div>
-  <input v-model="tab.tabName" @click="selectedTabIndex=index" class="text-black border  px-2 py-1" :class="[selectedTabIndex==index?'bg-blue-200 border-blue-400':'bg-green-200 rounded-lg']" />
-<button @click="removeTab(index)" class="ml-2 text-red-600 opacity-0 hover:opacity-100 transition duration-200">
+            <div :class="['flex items-center rounded-lg px-3 py-1 mr-2 border', selectedTabIndex === index ? 'bg-blue-200 border-blue-400' : 'bg-green-200 border-green-400']">
+              <div v-if="tab?.isLoading">
+                <div class="spinner h-4 w-4 md:h-6 md:w-6 animate-spin border-2 border-t-transparent border-gray-300 rounded-full"></div>
+              </div>
+              <input v-model="tab.tabName" @click="selectedTabIndex=index" class="text-black border  px-2 py-1" :class="[selectedTabIndex==index?'bg-blue-200 border-blue-400':'bg-green-200 rounded-lg']" />
+              <button @click="removeTab(index)" class="ml-2 text-red-600 opacity-0 hover:opacity-100 transition duration-200">
                 <i class="fas fa-times"></i> <!-- Remove icon -->
               </button>
             </div>
-          </div>  
-          <!-- <button @click="addTab" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200 shadow-md">
-          <i class="fas fa-plus"></i> Add Tab 
-        </button> -->
+          </div>
         </div>
-      
       </div>
       <div class="tab" v-if="viewOption === 'both'">
         <div class="flex">
@@ -48,7 +43,7 @@
       <OutputSection v-if="viewOption === 'output'"  />
     </main>
 
-    <OllamaConfig v-if="showPopup" @closeConfig="toggleConfig" />
+    <OllamaConfig v-if="showPopup"  />
     <DeleteConfirmationPopup 
       v-if="showDeleteConfirmation" 
       :onConfirm="confirmDeleteTab" 
@@ -63,7 +58,7 @@ import { useShowPopUp, useAppState, defaultAppstate, useSelectedTabIndex } from 
 import InputSection from '../components/InputSection.vue';
 import OutputSection from '../components/OutputSection.vue';
 
-const showPopup = useShowPopUp();
+const showPopup = useShowPopUp(); // Use global popup state
 const appState = useAppState();
 const selectedTabIndex = useSelectedTabIndex(); // Track the selected tab index
 const viewOption = ref('both'); // Default to showing both sections
