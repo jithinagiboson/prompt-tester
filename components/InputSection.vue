@@ -55,23 +55,7 @@
           Submit Prompt
         </button>
       </div>
-      <div class="mb-4">
-        <h3 class="text-xl font-bold mb-2">Current Variables</h3>
-        <table class="min-w-full border-collapse border border-gray-300">
-          <thead>
-            <tr>
-              <th class="border border-gray-300 p-2">Variable Name</th>
-              <th class="border border-gray-300 p-2">Variable Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(variable, index) in currentTab.variables" :key="index">
-              <td class="border border-gray-300 p-2">{{ variable.name }}</td>
-              <td class="border border-gray-300 p-2">{{ variable.value }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    
     </div>
   </section>
 </template>
