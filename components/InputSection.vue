@@ -86,21 +86,26 @@ const removeTab = (index) => {
 };
 
 const submitPrompt = async () => {
-  const formattedPrompt = currentTab.value.prompt; // Get prompt from current tab
-
+  let saveIndex=selectedTabIndex.value
+ 
+  let memorisedSelectedTab= appState.value[saveIndex]
+  console.log(memorisedSelectedTab)
+  const formattedPrompt = memorisedSelectedTab.prompt; // Get prompt from current tab
+  const responseFormat = memorisedSelectedTab.responseFormat; // Get response format from current tab
+ 
   try {
     const startTime = performance.now();
     let llmResponse = await callLLM(
       formattedPrompt,
       modelConfig.value,
-      currentTab.value.responseFormat, // Use currentTab's response format
-      currentTab.value // Pass currentTab to manage loading state
+      responseFormat, // Use currentTab's response format
+      memorisedSelectedTab // Pass currentTab to manage loading state
     );
     const endTime = performance.now();
-    currentTab.value.responseTime = ((endTime - startTime) / 1000).toFixed(3) + 's'; // Store response time in currentTab
-    currentTab.value.response = currentTab.value.responseFormat == "json" ? JSON.stringify(llmResponse, null, 4) : llmResponse; // Store response in currentTab
+    memorisedSelectedTab.responseTime = ((endTime - startTime) / 1000).toFixed(3) + 's'; // Store response time in currentTab
+    memorisedSelectedTab.response = memorisedSelectedTab.responseFormat == "json" ? JSON.stringify(llmResponse, null, 4) : llmResponse; // Store response in currentTab
   } catch (error) {
-    currentTab.value.response = error; // Store error in currentTab
+    memorisedSelectedTab.response = error; // Store error in currentTab
   }
 };
 

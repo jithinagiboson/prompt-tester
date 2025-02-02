@@ -20,7 +20,7 @@
   
       <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2">Select Tab</label>
-        <div class="flex mb-2">
+<div class="flex mb-2 overflow-x-auto">
           <div v-for="(tab, index) in appState" :key="index" class="relative flex items-center mb-2">
 <div :class="['flex items-center rounded-lg px-3 py-1 mr-2 border', selectedTabIndex === index ? 'bg-blue-200 border-blue-400' : 'bg-green-200 border-green-400']">
 <input v-model="tab.tabName" @click="selectedTabIndex=index" class="text-black border  px-2 py-1" :class="[selectedTabIndex==index?'bg-blue-200 border-blue-400':'bg-green-200 rounded-lg']" />
@@ -28,11 +28,12 @@
                 <i class="fas fa-times"></i> <!-- Remove icon -->
               </button>
             </div>
-          </div>
+          </div>  
+          <!-- <button @click="addTab" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200 shadow-md">
+          <i class="fas fa-plus"></i> Add Tab 
+        </button> -->
         </div>
-        <button @click="addTab" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200 shadow-md">
-          <i class="fas fa-plus"></i> Add Tab <!-- Plus icon -->
-        </button>
+      
       </div>
       <div class="tab" v-if="viewOption === 'both'">
         <div class="flex">

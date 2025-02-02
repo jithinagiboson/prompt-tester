@@ -17,6 +17,9 @@ const generateModel = (modelConfig) => {
 }
 
 export const callLLM = async (promptTemplate, modelConfig, responseFormat, currentTab) => {
+    // let appState= useAppState()
+    // // let memorizedCurrentTab=appState.value[saveIndex]
+    // let currentTab = appState.value[saveIndex]
     currentTab.isLoading = true; // Set loading state to true
 
     try {
