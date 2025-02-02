@@ -39,7 +39,7 @@
           <OutputSection class="flex-1"  />
         </div>
       </div>
-      <InputSection v-if="viewOption === 'input'" />
+<InputSection v-if="viewOption === 'input' && appState.length > 0" />
       <OutputSection v-if="viewOption === 'output'"  />
     </main>
 

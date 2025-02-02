@@ -68,7 +68,10 @@ const appState = useAppState(); // Access global app state
 const selectedTabIndex = useSelectedTabIndex(); // Track the selected tab index
 const viewOption = useViewOption(); // Default to showing both sections
 
-const currentTab = computed(() => appState.value[selectedTabIndex.value]); // Reactive computed property for current tab
+const currentTab = computed(() => {
+  const tab = appState.value[selectedTabIndex.value];
+  return tab ? tab : { variables: [], prompt: '' }; // Fallback to prevent hydration issues
+});
 
 const addVariable = () => {
   currentTab.value.variables.push({ name: "", value: "" }); // Use current tab for variables
