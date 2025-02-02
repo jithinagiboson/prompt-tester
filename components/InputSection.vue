@@ -7,7 +7,7 @@
     "
   >
     <h2 class="text-2xl font-bold mb-4">Input Section</h2>
-    <div v-if="currentTab.isLoading"><div class="spinner"></div></div>
+    <div v-if="currentTab?.isLoading"><div class="spinner"></div></div>
     <div>
       <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2">Define Variables</label>
