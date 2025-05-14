@@ -76,7 +76,16 @@
       </div>
       <div class="mb-4">
         <label for="openAIModel" class="block text-gray-700 font-bold mb-2">OpenAI Model</label>
-        <input id="openAIModel" v-model="modelConfig.openAIModel" type="text" class="w-full p-2 border rounded-lg" placeholder="e.g., gpt-3.5-turbo">
+        <select id="openAIModel" v-model="modelConfig.openAIModel" class="w-full p-2 border rounded-lg">
+          <option value="gpt-4o">gpt-4o (latest, multimodal)</option>
+          <option value="gpt-4o-mini">gpt-4o-mini</option>
+          <option value="gpt-4-1106-preview">gpt-4-1106-preview</option>
+          <option value="gpt-4">gpt-4</option>
+          <option value="gpt-4-32k">gpt-4-32k</option>
+          <option value="gpt-4-turbo">gpt-4-turbo</option>
+          <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+          <option value="gpt-3.5-turbo-instruct">gpt-3.5-turbo-instruct</option>
+        </select>
       </div>
       <div class="mb-4">
         <label for="openAITemperature" class="block text-gray-700 font-bold mb-2">Temperature</label>

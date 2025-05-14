@@ -1,19 +1,28 @@
 import { JsonOutputParser, StringOutputParser } from "@langchain/core/output_parsers";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { Ollama } from "@langchain/ollama";
-
+import { OpenAI } from "@langchain/openai";
 // Define or import the config object
 const config = {
     url: 'https://cm80i43mel2dut-11434.proxy.runpod.net/',
     model: "ph4:4k",
     temperature: 0,
     maxRetries: 2,
+    openAIApiKey: "",
     // other params...
 };
 
 const generateModel = (modelConfig) => {
-    let llm = new Ollama(modelConfig);
-    return llm;
+    if (modelConfig.provider === 'openai') {
+        return new OpenAI({
+            apiKey: modelConfig.openAIApiKey || config.openAIApiKey,
+            model: modelConfig.openAIModel,
+            temperature: modelConfig.openAITemperature,
+            maxTokens: modelConfig.openAIMaxTokens
+        });
+    } else {
+        return new Ollama(modelConfig);
+    }
 }
 
 export const callLLM = async (promptTemplate, modelConfig, responseFormat, currentTab) => {

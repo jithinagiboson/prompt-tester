@@ -2,6 +2,8 @@ export const useShowPopUp = () => useState("showpopup", () => false);
 export const useLoadingState = () => useState("isLoading", () => false);
 
 export const useModelConfig = () => useState('modelConfig', () => ref({
+    provider: 'ollama', // 'ollama' or 'openai'
+    // Ollama fields
     model: 'phi4:4k',
     baseUrl: 'https://ie3ukzqc9wrws5-11434.proxy.runpod.net',
     temperature: 0,
@@ -13,7 +15,13 @@ export const useModelConfig = () => useState('modelConfig', () => ref({
     numPredict: 1000,
     verbose: false,
     stopSequences: '',
-    stream: false
+    stream: false,
+    // OpenAI fields
+    openAIApiKey: "",
+
+    openAIModel: 'gpt-3.5-turbo',
+    openAITemperature: 0.7,
+    openAIMaxTokens: 1024
 }));
 
 const defaultAppstateValue = {

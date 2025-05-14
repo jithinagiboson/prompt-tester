@@ -43,7 +43,7 @@
       <OutputSection v-if="viewOption === 'output'"  />
     </main>
 
-    <OllamaConfig v-if="showPopup"  />
+    <ModelConfig v-if="showPopup"  />
     <DeleteConfirmationPopup 
       v-if="showDeleteConfirmation" 
       :onConfirm="confirmDeleteTab" 
