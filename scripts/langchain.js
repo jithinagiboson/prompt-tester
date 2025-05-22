@@ -2,6 +2,7 @@ import { JsonOutputParser, StringOutputParser } from "@langchain/core/output_par
 import { PromptTemplate } from "@langchain/core/prompts";
 import { Ollama } from "@langchain/ollama";
 import { OpenAI } from "@langchain/openai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 // Define or import the config object
 const config = {
     url: 'https://cm80i43mel2dut-11434.proxy.runpod.net/',
@@ -19,6 +20,13 @@ const generateModel = (modelConfig) => {
             model: modelConfig.openAIModel,
             temperature: modelConfig.openAITemperature,
             maxTokens: modelConfig.openAIMaxTokens
+        });
+    } else if (modelConfig.provider === 'google') {
+        return new ChatGoogleGenerativeAI({
+            model: modelConfig.googleModel,
+            temperature: modelConfig.googleTemperature,
+            maxOutputTokens: modelConfig.googleMaxOutputTokens,
+            apiKey: modelConfig.googleApiKey
         });
     } else {
         return new Ollama(modelConfig);
@@ -38,7 +46,11 @@ export const callLLM = async (promptTemplate, modelConfig, responseFormat, curre
         let parser = new StringOutputParser();
         
         if (responseFormat == 'json') {
-            llm = generateModel({ ...modelConfig, format: 'json' });
+            if (modelConfig.provider === 'google') {
+                llm = generateModel({ ...modelConfig, json: true });
+            } else {
+                llm = generateModel({ ...modelConfig, format: 'json' });
+            }
             parser = new JsonOutputParser();
         }
         

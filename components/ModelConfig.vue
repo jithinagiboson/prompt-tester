@@ -11,6 +11,7 @@
       <select id="provider" v-model="modelConfig.provider" class="w-full p-2 border rounded-lg">
         <option value="ollama">Ollama</option>
         <option value="openai">OpenAI</option>
+        <option value="google">Google (Gemini/Gemma)</option>
       </select>
     </div>
     <div v-if="modelConfig.provider === 'ollama'">
@@ -94,6 +95,39 @@
       <div class="mb-4">
         <label for="openAIMaxTokens" class="block text-gray-700 font-bold mb-2">Max Tokens</label>
         <input id="openAIMaxTokens" v-model="modelConfig.openAIMaxTokens" type="number" class="w-full p-2 border rounded-lg">
+      </div>
+    </div>
+    <div v-else-if="modelConfig.provider === 'google'">
+      <div class="mb-4">
+        <label for="googleApiKey" class="block text-gray-700 font-bold mb-2">Google API Key</label>
+        <input id="googleApiKey" v-model="modelConfig.googleApiKey" type="password" class="w-full p-2 border rounded-lg">
+      </div>
+      <div class="mb-4">
+        <label for="googleModel" class="block text-gray-700 font-bold mb-2">Google Model</label>
+        <select id="googleModel" v-model="modelConfig.googleModel" class="w-full p-2 border rounded-lg">
+          <option value="gemini-pro">Gemini Pro</option>
+          <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+          <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+          <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+          <option value="gemini-2.0-pro">Gemini 2.0 Pro</option>
+          <option value="gemini-1.0-pro">Gemini 1.0 Pro</option>
+          <option value="gemini-1.0-pro-001">Gemini 1.0 Pro 001</option>
+          <option value="gemini-1.0-pro-002">Gemini 1.0 Pro 002</option>
+          <option value="gemini-pro-vision">Gemini Pro Vision</option>
+          <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (Latest)</option>
+          <option value="gemini-1.5-flash-latest">Gemini 1.5 Flash (Latest)</option>
+          <option value="gemini-2.0-pro-latest">Gemini 2.0 Pro (Latest)</option>
+          <option value="gemma-2b">Gemma 2B</option>
+          <option value="gemma-7b">Gemma 7B</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label for="googleTemperature" class="block text-gray-700 font-bold mb-2">Temperature</label>
+        <input id="googleTemperature" v-model="modelConfig.googleTemperature" type="range" min="0" max="2" step="0.01" class="w-full">
+      </div>
+      <div class="mb-4">
+        <label for="googleMaxOutputTokens" class="block text-gray-700 font-bold mb-2">Max Output Tokens</label>
+        <input id="googleMaxOutputTokens" v-model="modelConfig.googleMaxOutputTokens" type="number" class="w-full p-2 border rounded-lg">
       </div>
     </div>
   </div>
