@@ -29,6 +29,9 @@
               <button @click="removeTab(index)" class="ml-2 text-red-600 opacity-0 hover:opacity-100 transition duration-200">
                 <i class="fas fa-times"></i> <!-- Remove icon -->
               </button>
+              <button @click="duplicateTab(index)" class="ml-2 text-blue-600 opacity-0 hover:opacity-100 transition duration-200" title="Duplicate Tab">
+                <i class="fas fa-copy"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -88,6 +91,18 @@ const removeTab = (index) => {
 
 const editTab = (index) => {
   // Logic to handle editing the tab name can be added here if needed
+};
+
+const duplicateTab = (index) => {
+  const tabToCopy = appState.value[index];
+  if (!tabToCopy) return;
+  // Deep clone the tab
+  const newTab = JSON.parse(JSON.stringify(tabToCopy));
+  // Give it a new name
+  newTab.tabName = `${tabToCopy.tabName} (Copy)`;
+  appState.value.push(newTab);
+  // Select the new tab
+  selectedTabIndex.value = appState.value.length - 1;
 };
 
 // Initialize with one default tab
