@@ -100,6 +100,7 @@ const duplicateTab = (index) => {
   const newTab = JSON.parse(JSON.stringify(tabToCopy));
   // Give it a new name
   newTab.tabName = `${tabToCopy.tabName} (Copy)`;
+  newTab.isLoading = false;
   appState.value.push(newTab);
   // Select the new tab
   selectedTabIndex.value = appState.value.length - 1;

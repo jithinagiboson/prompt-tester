@@ -33,7 +33,7 @@ const generateModel = (modelConfig) => {
     }
 }
 
-export const callLLM = async (promptTemplate, modelConfig, responseFormat, currentTab) => {
+export const callLLM = async (promptTemplate, modelConfig, responseFormat, currentTab, abortSignal) => {
     // let appState= useAppState()
     // // let memorizedCurrentTab=appState.value[saveIndex]
     // let currentTab = appState.value[saveIndex]
@@ -54,6 +54,9 @@ export const callLLM = async (promptTemplate, modelConfig, responseFormat, curre
             parser = new JsonOutputParser();
         }
         
+        // If the LLM library supports AbortSignal, pass it here. Otherwise, this is a placeholder for future support.
+        // Example for fetch: fetch(url, { signal: abortSignal })
+        // For now, just invoke as before:
         return await prompt.pipe(llm).pipe(parser).invoke(); // Use the user-defined prompt
     } finally {
         currentTab.isLoading = false; // Reset loading state

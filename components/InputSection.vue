@@ -51,8 +51,16 @@
         <button
           @click="submitPrompt"
           class="bg-green-600 text-white px-4 py-2 rounded-lg"
+          :disabled="currentTab.isLoading"
         >
           Submit Prompt
+        </button>
+        <button
+          v-if="currentTab.isLoading"
+          @click="cancelRequest"
+          class="bg-red-600 text-white px-4 py-2 rounded-lg ml-2"
+        >
+          Cancel
         </button>
       </div>
     
@@ -121,16 +129,24 @@ const convertToDoubleBraces=(input)=> {
 
 
 
+const abortControllers = ref({}); // Store controllers per tab index
+
 const submitPrompt = async () => {
-  
-  let saveIndex=selectedTabIndex.value
- 
-  let memorisedSelectedTab= appState.value[saveIndex]
- // Parse variables into an object
- const variablesObj = {};
- let variables=currentTab.value.variables
+  let saveIndex = selectedTabIndex.value;
+  let memorisedSelectedTab = appState.value[saveIndex];
+
+  // Cancel any previous request for this tab
+  if (abortControllers.value[saveIndex]) {
+    abortControllers.value[saveIndex].abort();
+  }
+  const controller = new AbortController();
+  abortControllers.value[saveIndex] = controller;
+
+  // Parse variables into an object
+  const variablesObj = {};
+  let variables = currentTab.value.variables;
   variables.forEach((variable) => {
-    const trimmedName = variable.name.trim(); // Trim whitespace from variable name
+    const trimmedName = variable.name.trim();
     if (trimmedName && variable.value) {
       variablesObj[trimmedName] = convertToDoubleBraces(variable.value);
     }
@@ -153,15 +169,32 @@ const submitPrompt = async () => {
     let llmResponse = await callLLM(
       formattedPrompt,
       modelConfig.value,
-      responseFormat, // Use currentTab's response format
-      memorisedSelectedTab // Pass currentTab to manage loading state
+      responseFormat,
+      memorisedSelectedTab,
+      controller.signal // Pass abort signal
     );
     const endTime = performance.now();
     memorisedSelectedTab.responseTime = ((endTime - startTime) / 1000).toFixed(3) + 's'; // Store response time in currentTab
     memorisedSelectedTab.response = memorisedSelectedTab.responseFormat == "json" ? JSON.stringify(llmResponse, null, 4) : llmResponse; // Store response in currentTab
   } catch (error) {
-    memorisedSelectedTab.response = error; // Store error in currentTab
+    if (error.name === 'AbortError') {
+      memorisedSelectedTab.response = 'Request cancelled.';
+    } else {
+      memorisedSelectedTab.response = error; // Store error in currentTab
+    }
+  } finally {
+    delete abortControllers.value[saveIndex];
   }
+};
+
+const cancelRequest = () => {
+  const saveIndex = selectedTabIndex.value;
+  if (abortControllers.value[saveIndex]) {
+    abortControllers.value[saveIndex].abort();
+    delete abortControllers.value[saveIndex];
+  }
+  // Reset isLoading status
+  appState.value[saveIndex].isLoading = false;
 };
 
 // Add keydown event listener for Ctrl + Enter
